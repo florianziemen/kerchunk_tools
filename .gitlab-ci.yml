@@ -21,5 +21,5 @@ run_pre_commit_hooks:
     paths:
       - ${PRE_COMMIT_HOME}
   script:
-    - python3 -m pip install pre-commit
-    - pre-commit run --all-files
+    - curl -LsSf https://astral.sh/uv/install.sh | sh
+    - uvx pre-commit run --all-files

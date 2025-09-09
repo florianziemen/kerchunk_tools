@@ -8,5 +8,6 @@ dependencies = [
     "fastparquet>=2024.11.0",
     "kerchunk>=0.2.9",
     "pandas>=2.3.2",
+    "pre-commit>=4.3.0",
     "xarray>=2025.9.0",
 ]
