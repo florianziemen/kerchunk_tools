@@ -43,6 +43,9 @@ def parse_args():
         logging.basicConfig(level=logging.DEBUG)
     return args
 
-if __name__ == "__main__":
+def main():
     args = parse_args()
     print_ds(args.infile, args.heads)
+
+if __name__ == "__main__":
+    main()

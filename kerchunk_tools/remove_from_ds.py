@@ -47,8 +47,11 @@ def parse_args():
     args = parser.parse_args()
     return args
 
-
-if __name__ == "__main__":
+def main():
     args = parse_args()
     for kerchunk_file in args.files:
         remove_from_ds(kerchunk_file, args.to_drop)
+
+
+if __name__ == "__main__":
+    main()

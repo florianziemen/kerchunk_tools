@@ -78,8 +78,10 @@ def parse_args():
         )
     return args
 
-
-if __name__ == "__main__":
+def main ():
     args = parse_args()
     for kerchunk_file in args.files:
         rename_dimensions(kerchunk_file, args.replacements)
+
+if __name__ == "__main__":
+    main()

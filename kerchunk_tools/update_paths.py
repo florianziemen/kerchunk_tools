@@ -34,7 +34,10 @@ def parse_args():
         logging.basicConfig(level=logging.DEBUG)
     return args
 
-if __name__ == "__main__":
+def main():
     logging.basicConfig(level=logging.INFO)
     args = parse_args()
     rewrite_kerchunk_parquets_inplace(args.input_dir, args.old_prefix, args.new_prefix)
+    
+if __name__ == "__main__":
+    main()

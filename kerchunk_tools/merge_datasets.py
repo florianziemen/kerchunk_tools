@@ -8,7 +8,7 @@ from typing import List
 import xarray as xr
 from pathlib import Path
 import logging
-import print_ds
+import kerchunk_tools.print_ds as print_ds
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -82,8 +82,7 @@ def parse_args():
         logging.basicConfig(level=logging.DEBUG)
     return args
 
-
-if __name__ == "__main__":
+def main():
     args = parse_args()
     no_time, with_time = sort_time_dependent(args.files)
     merge_datasets_with_time(with_time, args.output+".time.parquet")
@@ -92,3 +91,6 @@ if __name__ == "__main__":
     else:
         Path(args.output+".time.parquet").rename(args.output)
     print_ds.print_ds(args.output)
+
+if __name__ == "__main__":
+    main()
