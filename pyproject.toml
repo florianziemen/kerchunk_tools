@@ -1,5 +1,5 @@
 [project]
-name = "kerchunk-tools"
+name = "kerchunk_tools"
 version = "0.1.0"
 description = "Simple tools for working with kerchunk (parquet) files"
 readme = "README.md"
@@ -10,7 +10,8 @@ dependencies = [
     "pandas>=2.3.2",
     "pre-commit>=4.3.0",
     "xarray>=2025.9.0",
-]
+    "zarr>=3.1.1",
+    ]
 authors = [
     { name="Florian Ziemen", email="ziemen@dkrz.de" }
 ]

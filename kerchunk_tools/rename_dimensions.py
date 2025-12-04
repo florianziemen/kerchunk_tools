@@ -5,7 +5,7 @@ from argparse import ArgumentParser
 import logging
 import xarray as xr
 import json
-from typing import Dict
+from typing import Dict, Union
 from pathlib import Path
 
 # %%
@@ -16,9 +16,10 @@ logger.setLevel(logging.DEBUG)
 
 
 # %%
-def rename_dimensions(kerchunk_file, replacements: Dict[str, str]):
+def rename_dimensions(kerchunk_file:Union[str, Path], replacements: Dict[str, str]):
+    kerchunk_file = Path(kerchunk_file)
     logger.debug(f"Processing kerchunk file: {kerchunk_file}")
-    with open(kerchunk_file + "/.zmetadata", "r") as f:
+    with open(kerchunk_file / ".zmetadata", "r") as f:
         kerchunk_data = json.load(f)
 
     logger.debug(f"Keys in {kerchunk_file}: {list(kerchunk_data['metadata'].keys())}")
@@ -34,9 +35,9 @@ def rename_dimensions(kerchunk_file, replacements: Dict[str, str]):
         rename_metadata_keys(kerchunk_data, old, new)
         print(kerchunk_data["metadata"])
     for old, new in replacements.items():
-        if (Path(kerchunk_file) / old).exists():
-            (Path(kerchunk_file) / old).rename(Path(kerchunk_file) / new)
-    with open(kerchunk_file + "/.zmetadata", "w") as f:
+        if (kerchunk_file / old).exists():
+            (kerchunk_file / old).rename(kerchunk_file / new)
+    with open(kerchunk_file / ".zmetadata", "w") as f:
         json.dump(kerchunk_data, f, indent=2)
 
 

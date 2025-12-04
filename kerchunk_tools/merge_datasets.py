@@ -4,7 +4,7 @@ from kerchunk.combine import MultiZarrToZarr, merge_vars
 from fsspec.implementations.reference import LazyReferenceMapper
 import kerchunk.df
 from argparse import ArgumentParser
-from typing import List
+from typing import Iterable, List, Union
 import xarray as xr
 from pathlib import Path
 import logging
@@ -50,10 +50,15 @@ def sort_time_dependent(files):
     no_time = list()
     with_time = list()
     for f in files:
-        if "time" in xr.open_zarr(f"reference::{f}", consolidated=False).dims:
+        ds = xr.open_zarr(f"reference::{f}", consolidated=False)
+        if "time" in ds.dims:
             with_time.append(f)
         else:
             no_time.append(f)
+            logger.debug(f"File {f} has no time dimension.")
+            logger.debug(f"Dimensions: {ds.dims}")
+    logger.debug(f"Datasets without time dimension: {no_time}")
+    logger.debug(f"Datasets with time dimension: {with_time}")
     return no_time, with_time
 
 
@@ -82,15 +87,21 @@ def parse_args():
         logging.basicConfig(level=logging.DEBUG)
     return args
 
+
+
+def merge_datasets(files: Union[Iterable[str],Iterable[Path]], output: Union[str,Path]):
+    files = [str(Path(f).resolve()) for f in files]
+    no_time, with_time = sort_time_dependent(files)
+    merge_datasets_with_time(with_time, str(output)+".time.parquet")
+    if no_time:
+        merge_time_independent_datasets(no_time + [ str(output)+".time.parquet"], output)
+    else:
+        (Path(str(output) + ".time.parquet")).rename(output)
+    print_ds.print_ds(output)
+
 def main():
     args = parse_args()
-    no_time, with_time = sort_time_dependent(args.files)
-    merge_datasets_with_time(with_time, args.output+".time.parquet")
-    if no_time:
-        merge_time_independent_datasets(no_time + [ args.output+".time.parquet"], args.output)
-    else:
-        Path(args.output+".time.parquet").rename(args.output)
-    print_ds.print_ds(args.output)
+    merge_datasets(args.files, args.output)
 
 if __name__ == "__main__":
     main()
