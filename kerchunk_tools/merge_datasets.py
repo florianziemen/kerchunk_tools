@@ -24,6 +24,7 @@ def merge_datasets_with_time(
         files,
         concat_dims=["time"],
         identical_dims=get_identical_dims(files),
+        inline_threshold=0,
     ).translate()
 
     kerchunk.df.refs_to_dataframe(
