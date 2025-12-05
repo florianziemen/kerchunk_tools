@@ -33,7 +33,7 @@ def rename_dimensions(kerchunk_file:Union[str, Path], replacements: Dict[str, st
         update_array_dimensions(replacements, kerchunk_data, x)
     for old, new in replacements.items():
         rename_metadata_keys(kerchunk_data, old, new)
-        print(kerchunk_data["metadata"])
+        logger.debug(kerchunk_data["metadata"])
     for old, new in replacements.items():
         if (kerchunk_file / old).exists():
             (kerchunk_file / old).rename(kerchunk_file / new)
@@ -79,7 +79,7 @@ def parse_args():
         )
     return args
 
-def main ():
+def main():
     args = parse_args()
     for kerchunk_file in args.files:
         rename_dimensions(kerchunk_file, args.replacements)

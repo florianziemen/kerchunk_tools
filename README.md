@@ -1,4 +1,4 @@
-# Simple tools that manipulate kerchunk datasets based on the raw parquet fieles
+# Simple tools that manipulate kerchunk datasets based on the raw parquet files
 
 ## Scripts in `kerchunk_tools/`
 

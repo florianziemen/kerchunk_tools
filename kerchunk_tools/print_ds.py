@@ -8,7 +8,7 @@ import sys
 import logging
 
 
-def print_ds(infile, print_heads = False):
+def print_ds(infile, print_heads=False):
     ds = xr.open_zarr(f"reference::{infile}", consolidated=False)
     print(ds)
     print_inlined_dimensions(infile, ds)
@@ -16,7 +16,7 @@ def print_ds(infile, print_heads = False):
         print_head(infile, ds)
 
 def print_inlined_dimensions(infile, ds):
-    print ("Inlined dimensions and their sizes:")
+    print("Inlined dimensions and their sizes:")
     for x in ds.dims:
         try:
             dt = pd.read_parquet(f"{infile}/{x}/refs.0.parq", engine="fastparquet")

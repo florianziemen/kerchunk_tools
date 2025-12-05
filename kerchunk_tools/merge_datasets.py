@@ -1,4 +1,4 @@
-#! /fastdata/bm1235/python_environments_forge/miniconda3/envs/kerchunk/bin/python3
+#!/usr/bin/env python3
 
 from kerchunk.combine import MultiZarrToZarr, merge_vars
 from fsspec.implementations.reference import LazyReferenceMapper
