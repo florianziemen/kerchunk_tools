@@ -34,4 +34,4 @@ jobs:
           uv pip install .[test]
       - name: Run tests
         run: |
-          uv pip run pytest
+          uv run pytest
