@@ -1,0 +1,39 @@
+[project]
+name = "kerchunk_tools"
+version = "0.1.0"
+description = "Simple tools for working with kerchunk (parquet) files"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastparquet>=2024.11.0",
+    "kerchunk>=0.2.9",
+    "pandas>=2.3.2",
+    "pre-commit>=4.3.0",
+    "xarray>=2025.9.0",
+    "zarr>=3.1.1",
+    "dask>=2025.11.0",
+    ]
+authors = [
+    { name="Florian Ziemen", email="ziemen@dkrz.de" }
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest>=8.4.0",
+    "netcdf4>=1.7.0",
+    "h5netcdf>=1.4.0",
+    "virtualizarr",
+    "fsspec",
+    "obstore",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project.scripts]
+merge_datasets = "kerchunk_tools.merge_datasets:main"
+remove_from_ds = "kerchunk_tools.remove_from_ds:main"
+rename_dimensions = "kerchunk_tools.rename_dimensions:main"
+print_ds = "kerchunk_tools.print_ds:main"
+update_paths = "kerchunk_tools.update_paths:main"

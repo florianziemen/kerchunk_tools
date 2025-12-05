@@ -1,0 +1,38 @@
+workflow:
+  # these rules ensure that whenever there's a merge request, a "merge request pipeline" is run,
+  # but otherwise a classical branch-pipeline is run. This enables the use of merge-request specific
+  # environment variables within CI.
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS'
+      when: never
+    - if: '$CI_COMMIT_BRANCH'
+
+stages:
+  - test
+
+run_pre_commit_hooks:
+  tags:
+    - sphinx
+  stage: test
+  variables:
+    PRE_COMMIT_HOME: ${CI_PROJECT_DIR}/.cache/pre-commit
+  cache:
+    paths:
+      - ${PRE_COMMIT_HOME}
+  script:
+    - curl -LsSf https://astral.sh/uv/install.sh | sh
+    - source $HOME/.local/bin/env
+    - uvx pre-commit run --all-files
+
+run_tests:
+  tags: 
+    - sphinx
+  stage: test
+  script:
+    - apk add hdf5-dev netcdf-dev
+    - curl -LsSf https://astral.sh/uv/install.sh | sh
+    - source $HOME/.local/bin/env
+    - uv venv
+    - uv pip install .[test]
+    - uv run pytest
