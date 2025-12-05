@@ -14,6 +14,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
+
 def merge_datasets_with_time(
     files: List[str],
     outfile: str,
@@ -34,6 +35,7 @@ def merge_datasets_with_time(
     )
     return out_json
 
+
 def merge_time_independent_datasets(parquet_stores, outfile):
     stores = [
         dict(
@@ -46,6 +48,7 @@ def merge_time_independent_datasets(parquet_stores, outfile):
 
     merged_refs = merge_vars(stores)
     kerchunk.df.refs_to_dataframe(merged_refs, outfile, record_size=100000)
+
 
 def sort_time_dependent(files):
     no_time = list()
@@ -89,20 +92,25 @@ def parse_args():
     return args
 
 
-
-def merge_datasets(files: Union[Iterable[str],Iterable[Path]], output: Union[str,Path]):
+def merge_datasets(
+    files: Union[Iterable[str], Iterable[Path]], output: Union[str, Path]
+):
     files = [str(Path(f).resolve()) for f in files]
     no_time, with_time = sort_time_dependent(files)
-    merge_datasets_with_time(with_time, str(output)+".time.parquet")
+    merge_datasets_with_time(with_time, str(output) + ".time.parquet")
     if no_time:
-        merge_time_independent_datasets(no_time + [ str(output)+".time.parquet"], output)
+        merge_time_independent_datasets(
+            no_time + [str(output) + ".time.parquet"], output
+        )
     else:
         (Path(str(output) + ".time.parquet")).rename(output)
     print_ds.print_ds(output)
 
+
 def main():
     args = parse_args()
     merge_datasets(args.files, args.output)
+
 
 if __name__ == "__main__":
     main()

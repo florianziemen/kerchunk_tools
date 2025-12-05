@@ -9,6 +9,7 @@ from virtualizarr.parsers import HDFParser
 from virtualizarr.registry import ObjectStoreRegistry
 from typing import Tuple, List
 
+
 @pytest.fixture(scope="session")
 def datasets() -> Tuple[xr.Dataset, xr.Dataset, xr.Dataset]:
     ds1 = xr.Dataset(
@@ -42,7 +43,9 @@ def datasets() -> Tuple[xr.Dataset, xr.Dataset, xr.Dataset]:
 
 
 @pytest.fixture(scope="session")
-def netcdf_files(datasets: Tuple[xr.Dataset, xr.Dataset, xr.Dataset]) -> List[pathlib.Path]:
+def netcdf_files(
+    datasets: Tuple[xr.Dataset, xr.Dataset, xr.Dataset],
+) -> List[pathlib.Path]:
     with tempfile.TemporaryDirectory() as tmpdir:
         paths: List[pathlib.Path] = []
         for i, ds in enumerate(datasets):
@@ -55,8 +58,11 @@ def netcdf_files(datasets: Tuple[xr.Dataset, xr.Dataset, xr.Dataset]) -> List[pa
 @pytest.fixture(scope="session")
 def kerchunk_files(netcdf_files: List[pathlib.Path]) -> List[pathlib.Path]:
     kerchunk_paths: List[pathlib.Path] = []
-    
-    stores = {f"file://{path.parent}": obstore.store.from_url(f"file://{path.parent}") for path in netcdf_files}
+
+    stores = {
+        f"file://{path.parent}": obstore.store.from_url(f"file://{path.parent}")
+        for path in netcdf_files
+    }
     registry = ObjectStoreRegistry(stores)
     parser = HDFParser()
 

@@ -6,7 +6,10 @@ import shutil
 from typing import List, Tuple
 
 
-def test_remove_from_ds(kerchunk_files: List[pathlib.Path], datasets: Tuple[xr.Dataset, xr.Dataset, xr.Dataset]):
+def test_remove_from_ds(
+    kerchunk_files: List[pathlib.Path],
+    datasets: Tuple[xr.Dataset, xr.Dataset, xr.Dataset],
+):
     with tempfile.TemporaryDirectory() as tmpdir:
         kerchunk_file: pathlib.Path = kerchunk_files[0]
         # remove_from_ds modifies in place, so we need to copy the file first

@@ -15,6 +15,7 @@ def print_ds(infile, print_heads=False):
     if print_heads:
         print_head(infile, ds)
 
+
 def print_inlined_dimensions(infile, ds):
     print("Inlined dimensions and their sizes:")
     for x in ds.dims:
@@ -23,6 +24,7 @@ def print_inlined_dimensions(infile, ds):
             print(x, sys.getsizeof(dt.head(1)["raw"]))
         except FileNotFoundError:
             print(f"{x} has no data.")
+
 
 def print_head(infile, ds):
     print("Head of each variable:")
@@ -33,19 +35,26 @@ def print_head(infile, ds):
         except FileNotFoundError:
             print(f"{x} has no data.")
 
+
 def parse_args():
     parser = ArgumentParser(description="Print Zarr dataset")
     parser.add_argument("infile", help="Input Zarr file")
-    parser.add_argument("--heads", help="print heads of parquet tables", action="store_true")
-    parser.add_argument("-v","--verbose", help="Enable verbose logging", action="store_true")
+    parser.add_argument(
+        "--heads", help="print heads of parquet tables", action="store_true"
+    )
+    parser.add_argument(
+        "-v", "--verbose", help="Enable verbose logging", action="store_true"
+    )
     args = parser.parse_args()
     if args.verbose:
         logging.basicConfig(level=logging.DEBUG)
     return args
 
+
 def main():
     args = parse_args()
     print_ds(args.infile, args.heads)
+
 
 if __name__ == "__main__":
     main()
